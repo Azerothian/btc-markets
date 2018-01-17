@@ -1,27 +1,51 @@
 {
-    "name": "btc-markets",
-    "version": "0.0.10",
-    "description": "BTC Markets API Client for Node.JS",
-    "main": "index.js",
-    "dependencies": {
-        "request": "~2.83.0",
-        "underscore": "~1.8.3",
-        "cheerio": "~0.19.0",
-        "verror": "~1.6.0"
-    },
-    "keywords": [
-        "BTC Markets",
-        "API",
-        "exchange",
-        "Bitcoin",
-        "Ethereum",
-        "Australia",
-        "trading"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/naddison36/btc-markets"
-    },
-    "author": "Nick Addison",
-    "license": "MIT"
+  "name": "btc-markets",
+  "version": "0.0.10",
+  "description": "BTC Markets API Client for Node.JS",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "verbose": false,
+    "testPathIgnorePatterns": [
+      "<rootDir>/src/",
+      "<rootDir>/node_modules/"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.37",
+    "@babel/preset-env": "^7.0.0-beta.37",
+    "babel-eslint": "^8.2.1",
+    "babel-plugin-autobind-class-methods": "^5.0.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "dotenv": "^4.0.0",
+    "eslint": "^4.15.0",
+    "eslint-plugin-jest": "^21.6.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^8.0.0-beta.0",
+    "gulp-eslint": "^4.0.1",
+    "gulp-jsdoc3": "^1.0.1",
+    "gulp-sourcemaps": "^2.6.3",
+    "jest": "^22.1.1"
+  },
+  "dependencies": {
+    "node-fetch": "^1.7.3",
+    "verror": "^1.10.0"
+  },
+  "keywords": [
+    "BTC Markets",
+    "API",
+    "exchange",
+    "Bitcoin",
+    "Ethereum",
+    "Australia",
+    "trading"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naddison36/btc-markets"
+  },
+  "author": "Nick Addison",
+  "license": "MIT"
 }
