@@ -1,11 +1,3 @@
-import { setTimeout } from "timers";
-
-
-// function sleep(timeout = 1) {
-//   return new Promise((resolve, reject) => {
-//     return setTimeout(resolve, timeout);
-//   });
-// }
 function getTimestamp() {
   return new Date().getTime();
 }
@@ -13,6 +5,7 @@ function getTimestamp() {
 export default class RateLimit {
   constructor({amountOfCalls, timePeriod}) {
     this.queue = [];
+    this.timePeriod = (timePeriod * 1000);
     this.callPeriod = ((timePeriod * 1000) / amountOfCalls); // 400ms
     this.lastCalled = getTimestamp();
     this.time = 0; //(timePeriod * 1000); //TODO: need to fix the initial batch
@@ -31,6 +24,9 @@ export default class RateLimit {
     this.dispatcherRunning = true;
     if (this.queue.length > 0) {
       this.time += (getTimestamp() - this.lastCalled);
+      if (this.time > this.timePeriod) {
+        this.time = this.timePeriod;
+      }
       this.lastCalled = getTimestamp();
       if (this.time > this.callPeriod) {
         this.time -= this.callPeriod;

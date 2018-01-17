@@ -15,25 +15,45 @@ gulp.task("doc", function (cb) {
 gulp.task("clean", () => {
   return del(["build/**/*"]);
 });
-var babelOptions = {
-  "presets": [[
-    "@babel/preset-env", {
-      "targets": {
-        "node": "current", //8.9.4 LTS as of 17/01/2018
-      },
-      "useBuiltIns": "usage",
-    },
-  ]],
-  "plugins": [
-    "autobind-class-methods",
-    "transform-class-properties",
-  ],
-};
+
+gulp.task("compile:publish", ["lint"], () => {
+  return gulp.src(["src/**/*"])
+    .pipe(sourcemaps.init())
+    .pipe(babel({
+      "presets": [[
+        "@babel/preset-env", {
+          "targets": {
+            "node": "8.9.4", //8.9.4 LTS as of 17/01/2018
+          },
+          "useBuiltIns": "usage",
+        },
+      ]],
+      "plugins": [
+        "autobind-class-methods",
+        "transform-class-properties",
+      ],
+    }))
+    .pipe(sourcemaps.write(".", {includeContent: false, sourceRoot: "../src/"}))
+    .pipe(gulp.dest("build/"));
+});
 
 gulp.task("compile", ["lint"], () => {
   return gulp.src(["src/**/*"])
     .pipe(sourcemaps.init())
-    .pipe(babel(babelOptions))
+    .pipe(babel({
+      "presets": [[
+        "@babel/preset-env", {
+          "targets": {
+            "node": "current", //8.9.4 LTS as of 17/01/2018
+          },
+          "useBuiltIns": "usage",
+        },
+      ]],
+      "plugins": [
+        "autobind-class-methods",
+        "transform-class-properties",
+      ],
+    }))
     .pipe(sourcemaps.write(".", { includeContent: false, sourceRoot: "../src/" }))
     .pipe(gulp.dest("build/"));
 });

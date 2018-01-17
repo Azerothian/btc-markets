@@ -3,7 +3,6 @@ import crypto from "crypto";
 import querystring from "querystring";
 import RateLimiter from "./rate-limiter";
 
-
 const defaultRateLimit = {
   amountOfCalls: 25,
   timePeriod: 10,
@@ -17,6 +16,7 @@ const lowerRateLimit = {
 /**
  *
  *
+ * @param {object} [options={key,secret,server,timeout,userAgent,disableRateLimiters}]
  * @export
  * @class BTCMarkets
  */
@@ -36,7 +36,7 @@ export default class BTCMarkets {
    *
    *
    * @param {string} apiName
-   * @param {object} [defaults=defaultRateLimit] 
+   * @param {object} [defaults=defaultRateLimit]
    * @returns {Promise}
    * @memberof BTCMarkets
    */

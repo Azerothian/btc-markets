@@ -4,7 +4,8 @@
   "description": "BTC Markets API Client for Node.JS",
   "main": "build/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "yarn && gulp compile:publish"
   },
   "jest": {
     "verbose": false,
@@ -12,6 +13,13 @@
       "<rootDir>/src/",
       "<rootDir>/node_modules/"
     ]
+  },
+  "files": [
+    "build/index.js",
+    "build/rate-limiter.js"
+  ],
+  "devEngines": {
+    "node": "8.x || 9.x"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.37",
@@ -30,8 +38,7 @@
     "jest": "^22.1.1"
   },
   "dependencies": {
-    "node-fetch": "^1.7.3",
-    "verror": "^1.10.0"
+    "node-fetch": "^1.7.3"
   },
   "keywords": [
     "BTC Markets",
