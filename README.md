@@ -1,4 +1,4 @@
-BTC Markets Javascript API Client
+BTC Markets Rest Client
 ===============
 
 This is a node.js wrapper for the private and public methods exposed by the [BTC Markets API](https://github.com/BTCMarkets/API).
@@ -6,20 +6,15 @@ You will need have a registered account with [BTC Markets](https://btcmarkets.ne
 
 Please contact support@btcmarkets.net if you are having trouble opening and account or generating an API key. 
 
+For websocket support see [btc-markets-ws-api](https://www.github.com/azerothian/btc-markets-ws-api)
+
 ### Requirements
 
-- Nodejs >= 8.9.4 - (we use babel-preset-env, so if you want to use an older version you can always clone and adjust the babel-preset-env options in the gulp file)
+- Nodejs >= 8.9.4
 
 ### Install
 
-`npm install btc-markets`
-
-### Design Principles
-- **thin** the client is just a simple wrapper to the BTC Markets API. There is no parameter validation as this is delegated to the BTC Market API server. Similarly, there is no data transformation.
-- **errors** all errors are returned as Error objects which can be used programmatically or for debugging
-- **no retries** it's up to the calling program to handle retries as it'll vary between programs. For example, error handling timeouts on mutable API calls like addTrade and cancelOrder is not as simple as retying the API call as the operation my have been successful on the exchange but the response back was not.
-- **minimal dependencies** minimal runtime dependencies (node-fetch) for security conscious people as npm can be an attack vector
-- **testing** 
+`npm install btc-markets-api`
 
 ### Features
 - Promises - all functions return promises and can be used with all its glory.
@@ -28,7 +23,7 @@ Please contact support@btcmarkets.net if you are having trouble opening and acco
 ### Examples
 
 ```js
-import BTCMarkets from "btc-markets";
+import BTCMarkets from "btc-markets-api";
 (async() => {
     try {
         const client = new BTCMarkets({key: "", secret: ""});
@@ -79,3 +74,10 @@ import BTCMarkets from "btc-markets";
 BTCMKT_KEY=""
 BTCMKT_SECRET=""
 ```
+
+### Design Principles
+- **thin** the client is just a simple wrapper to the BTC Markets API. There is no parameter validation as this is delegated to the BTC Market API server. Similarly, there is no data transformation.
+- **errors** all errors are returned as Error objects which can be used programmatically or for debugging
+- **no retries** it's up to the calling program to handle retries as it'll vary between programs. For example, error handling timeouts on mutable API calls like addTrade and cancelOrder is not as simple as retying the API call as the operation my have been successful on the exchange but the response back was not.
+- **minimal dependencies** minimal runtime dependencies (node-fetch) for security conscious people as npm can be an attack vector
+- **testing** all functions are unit tested

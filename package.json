@@ -1,7 +1,7 @@
 {
-  "name": "btc-markets",
-  "version": "0.0.10",
-  "description": "BTC Markets API Client for Node.JS",
+  "name": "btc-markets-api",
+  "version": "1.0.0",
+  "description": "BTC Markets rest client",
   "main": "build/index.js",
   "scripts": {
     "test": "jest",
@@ -46,13 +46,14 @@
     "exchange",
     "Bitcoin",
     "Ethereum",
+    "Bitcoin Cash",
     "Australia",
     "trading"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/naddison36/btc-markets"
+    "url": "https://github.com/azerothian/btc-markets-api"
   },
-  "author": "Nick Addison",
+  "author": "Matthew Mckenzie",
   "license": "MIT"
 }
