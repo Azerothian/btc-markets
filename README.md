@@ -14,7 +14,7 @@ For websocket support see [btc-markets-ws-api](https://www.github.com/azerothian
 
 ### Install
 
-`npm install btc-markets-api`
+`npm install @azerothian/btc-markets-api`
 
 ### Documentation
 
@@ -27,7 +27,7 @@ For websocket support see [btc-markets-ws-api](https://www.github.com/azerothian
 ### Examples
 
 ```js
-import BTCMarkets from "btc-markets-api";
+import BTCMarkets from "@azerothian/btc-markets-api";
 (async() => {
     try {
         const client = new BTCMarkets({key: "", secret: ""});

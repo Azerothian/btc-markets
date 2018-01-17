@@ -1,5 +1,5 @@
 {
-  "name": "btc-markets-api",
+  "name": "@azerothian/btc-markets-api",
   "version": "1.0.0",
   "description": "BTC Markets Rest Client",
   "main": "build/index.js",
