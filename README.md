@@ -18,7 +18,7 @@ For websocket support see [btc-markets-ws-api](https://www.github.com/azerothian
 
 ### Documentation
 
-[Docs](https://azerothian.github.io/btc-markets-api/)
+[Link to Documentation](https://azerothian.github.io/btc-markets-api/)
 
 ### Features
 - Promises - all functions return promises and can be used with all its glory.
