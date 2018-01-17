@@ -16,6 +16,10 @@ For websocket support see [btc-markets-ws-api](https://www.github.com/azerothian
 
 `npm install btc-markets-api`
 
+### Documentation
+
+[Docs](https://azerothian.github.io/btc-markets-api/)
+
 ### Features
 - Promises - all functions return promises and can be used with all its glory.
 - Basic Rate limiting within the context of the Client per api. It is not a fool proof method, but it should work as long as you treat your client as a singleton. it can be disabled by providing {disableRateLimiters: true} as in option in the constructor. (it will only delay the execution of the command, till the queue has waited long enough)
@@ -74,10 +78,3 @@ import BTCMarkets from "btc-markets-api";
 BTCMKT_KEY=""
 BTCMKT_SECRET=""
 ```
-
-### Design Principles
-- **thin** the client is just a simple wrapper to the BTC Markets API. There is no parameter validation as this is delegated to the BTC Market API server. Similarly, there is no data transformation.
-- **errors** all errors are returned as Error objects which can be used programmatically or for debugging
-- **no retries** it's up to the calling program to handle retries as it'll vary between programs. For example, error handling timeouts on mutable API calls like addTrade and cancelOrder is not as simple as retying the API call as the operation my have been successful on the exchange but the response back was not.
-- **minimal dependencies** minimal runtime dependencies (node-fetch) for security conscious people as npm can be an attack vector
-- **testing** all functions are unit tested

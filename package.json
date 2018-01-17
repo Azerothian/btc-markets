@@ -1,7 +1,7 @@
 {
   "name": "btc-markets-api",
   "version": "1.0.0",
-  "description": "BTC Markets rest client",
+  "description": "BTC Markets Rest Client",
   "main": "build/index.js",
   "scripts": {
     "test": "jest",
