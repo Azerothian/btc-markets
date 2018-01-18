@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Class: BTCMarkets</title>
+	<title>Documentation Class: BTCMarketsAPI</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="BTCMarkets.html">BTCMarkets</a></li>
+					<li><a href="BTCMarketsAPI.html">BTCMarketsAPI</a></li><li><a href="BTCMarketsAPI.BTCMarketsAPI.html">BTCMarketsAPI.BTCMarketsAPI</a></li>
 				</ul>
 			</li>
 			
@@ -65,13 +65,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: BTCMarkets</h1>
+	<h1 class="page-title">Class: BTCMarketsAPI</h1>
 <section>
 
 <header>
     
         <h2>
-        BTCMarkets
+        BTCMarketsAPI
         </h2>
         
     
@@ -84,89 +84,23 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="BTCMarkets"><span class="type-signature"></span>new BTCMarkets( [options])</h4>
+    <h4 class="name" id="BTCMarketsAPI"><span class="type-signature"></span>new BTCMarketsAPI()</h4>
     
     
 </dt>
 <dd>
 
     
-
+    <div class="description">
+        <p>BTC Markets API Client</p>
+    </div>
     
 
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    {key,secret,server,timeout,userAgent,disableRateLimiters}
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
 
     
-    </tbody>
-</table>
-
     
 
     
@@ -232,6 +166,13 @@
     
 
     
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="BTCMarketsAPI.BTCMarketsAPI.html">BTCMarketsAPI</a></dt>
+            <dd></dd>
+        </dl>
+    
 
     
 
@@ -246,207 +187,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".callRateLimiter"><span class="type-signature">&lt;static> </span>callRateLimiter(apiName [, defaults])</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>apiName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>defaults</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    defaultRateLimit
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".cancelOrders"><span class="type-signature">&lt;async, static> </span>cancelOrders(orderIds)</h4>
+    <h4 class="name" id="cancelOrders"><span class="type-signature">&lt;async> </span>cancelOrders(orderIds)</h4>
     
     
 </dt>
@@ -590,7 +331,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".createOrder"><span class="type-signature">&lt;async, static> </span>createOrder(instrument, currency, price, volume, orderSide, ordertype, clientRequestId)</h4>
+    <h4 class="name" id="createOrder"><span class="type-signature">&lt;async> </span>createOrder(instrument, currency, price, volume, orderSide, ordertype, clientRequestId)</h4>
     
     
 </dt>
@@ -878,7 +619,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".getAccountBalances"><span class="type-signature">&lt;async, static> </span>getAccountBalances()</h4>
+    <h4 class="name" id="getAccountBalances"><span class="type-signature">&lt;async> </span>getAccountBalances()</h4>
     
     
 </dt>
@@ -972,7 +713,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".getOpenOrders"><span class="type-signature">&lt;async, static> </span>getOpenOrders(instrument, currency, limit, since)</h4>
+    <h4 class="name" id="getOpenOrders"><span class="type-signature">&lt;async> </span>getOpenOrders(instrument, currency, limit, since)</h4>
     
     
 </dt>
@@ -1188,7 +929,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".getOrderBook"><span class="type-signature">&lt;async, static> </span>getOrderBook(instrument, currency)</h4>
+    <h4 class="name" id="getOrderBook"><span class="type-signature">&lt;async> </span>getOrderBook(instrument, currency)</h4>
     
     
 </dt>
@@ -1356,7 +1097,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".getOrderDetail"><span class="type-signature">&lt;async, static> </span>getOrderDetail(orderIds)</h4>
+    <h4 class="name" id="getOrderDetail"><span class="type-signature">&lt;async> </span>getOrderDetail(orderIds)</h4>
     
     
 </dt>
@@ -1500,7 +1241,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".getOrderHistory"><span class="type-signature">&lt;async, static> </span>getOrderHistory(instrument, currency, limit, since)</h4>
+    <h4 class="name" id="getOrderHistory"><span class="type-signature">&lt;async> </span>getOrderHistory(instrument, currency, limit, since)</h4>
     
     
 </dt>
@@ -1716,7 +1457,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".getTick"><span class="type-signature">&lt;async, static> </span>getTick(instrument, currency)</h4>
+    <h4 class="name" id="getTick"><span class="type-signature">&lt;async> </span>getTick(instrument, currency)</h4>
     
     
 </dt>
@@ -1884,7 +1625,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".getTradeHistory"><span class="type-signature">&lt;async, static> </span>getTradeHistory(instrument, currency, limit, since)</h4>
+    <h4 class="name" id="getTradeHistory"><span class="type-signature">&lt;async> </span>getTradeHistory(instrument, currency, limit, since)</h4>
     
     
 </dt>
@@ -2100,7 +1841,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".getTrades"><span class="type-signature">&lt;async, static> </span>getTrades(instrument, currency, since)</h4>
+    <h4 class="name" id="getTrades"><span class="type-signature">&lt;async> </span>getTrades(instrument, currency, since)</h4>
     
     
 </dt>
@@ -2292,7 +2033,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".getTradingFee"><span class="type-signature">&lt;async, static> </span>getTradingFee(instrument, currency)</h4>
+    <h4 class="name" id="getTradingFee"><span class="type-signature">&lt;async> </span>getTradingFee(instrument, currency)</h4>
     
     
 </dt>
@@ -2460,7 +2201,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".publicRequest"><span class="type-signature">&lt;static> </span>publicRequest(instrument, currency, action, params)</h4>
+    <h4 class="name" id="publicRequest"><span class="type-signature"></span>publicRequest(instrument, currency, action, params)</h4>
     
     
 </dt>
@@ -2659,7 +2400,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise</span>
+<span class="param-type">Promise.&lt;object></span>
 
 
 
@@ -2676,7 +2417,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".signData"><span class="type-signature">&lt;static> </span>signData(path, timestamp [, body])</h4>
+    <h4 class="name" id="signData"><span class="type-signature"></span>signData(path, timestamp [, body])</h4>
     
     
 </dt>
@@ -2912,7 +2653,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".signedRequest"><span class="type-signature">&lt;async, static> </span>signedRequest(path, params)</h4>
+    <h4 class="name" id="signedRequest"><span class="type-signature">&lt;async> </span>signedRequest(path, params)</h4>
     
     
 </dt>
@@ -3080,7 +2821,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".withdrawCrypto"><span class="type-signature">&lt;async, static> </span>withdrawCrypto(amount, address, currency)</h4>
+    <h4 class="name" id="withdrawCrypto"><span class="type-signature">&lt;async> </span>withdrawCrypto(amount, address, currency)</h4>
     
     
 </dt>
@@ -3272,7 +3013,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".withdrawEFT"><span class="type-signature">&lt;async, static> </span>withdrawEFT(accountName, accountNumber, bankName, bsbNumber, amount [, currency])</h4>
+    <h4 class="name" id="withdrawEFT"><span class="type-signature">&lt;async> </span>withdrawEFT(accountName, accountNumber, bankName, bsbNumber, amount [, currency])</h4>
     
     
 </dt>
@@ -3662,7 +3403,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on January 18th 2018, 2:32:01 am
+		on January 18th 2018, 12:04:48 pm
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

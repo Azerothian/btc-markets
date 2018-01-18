@@ -1,53 +1,26 @@
 import fetch from "node-fetch";
 import crypto from "crypto";
 import querystring from "querystring";
-import RateLimiter from "./rate-limiter";
-
-const defaultRateLimit = {
-  amountOfCalls: 25,
-  timePeriod: 10,
-};
-const lowerRateLimit = {
-  amountOfCalls: 10,
-  timePeriod: 10,
-};
-
 
 /**
+ * BTC Markets API Client
  *
- *
- * @param {object} [options={key,secret,server,timeout,userAgent,disableRateLimiters}]
- * @export
- * @class BTCMarkets
+ * @class BTCMarketsAPI
  */
-export default class BTCMarkets {
+class BTCMarketsAPI {
+  /**
+   * Creates an instance of BTCMarketsAPI.
+   * @param {any} [options={}]
+   * @memberof BTCMarketsAPI
+   * @constructor
+   */
   constructor(options = {}) {
-    const { key, secret, server, timeout, userAgent, disableRateLimiters = false } = options;
+    const { key, secret, server, timeout, userAgent } = options;
     this.key = key;
     this.secret = secret;
     this.server = server || "https://api.btcmarkets.net";
     this.timeout = timeout || 20000;
-    this.userAgent = userAgent || "BTC Markets Javascript API Client";
-    this.disableRateLimiters = disableRateLimiters;
-    // https://github.com/BTCMarkets/API/wiki/faq
-    this.rateLimiters = {};
-  }
-  /**
-   *
-   *
-   * @param {string} apiName
-   * @param {object} [defaults=defaultRateLimit]
-   * @returns {Promise}
-   * @memberof BTCMarkets
-   */
-  callRateLimiter(apiName, defaults = defaultRateLimit) {
-    if (!this.disableRateLimiters) {
-      if (!this.rateLimiters[apiName]) {
-        this.rateLimiters[apiName] = new RateLimiter(defaults);
-      }
-      return this.rateLimiters[apiName].sleep();
-    }
-    return undefined;
+    this.userAgent = userAgent || "BTC Markets API Client";
   }
 
   /**
@@ -57,7 +30,7 @@ export default class BTCMarkets {
    * @param {any} timestamp
    * @param {string} [body=""]
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   signData(path, timestamp, body = "") {
     const data = `${path}\n${timestamp}\n${body}`;
@@ -70,7 +43,7 @@ export default class BTCMarkets {
    * @param {any} path
    * @param {any} params
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async signedRequest(path, params) {
     if (!this.key || !this.secret) {
@@ -114,8 +87,6 @@ export default class BTCMarkets {
     } catch (err) {
       throw new Error({ message: text });
     }
-    // return undefined;
-
   }
   /**
    *
@@ -124,8 +95,8 @@ export default class BTCMarkets {
    * @param {any} currency
    * @param {any} action
    * @param {any} params
-   * @returns {Promise}
-   * @memberof BTCMarkets
+   * @returns {Promise<object>}
+   * @memberof BTCMarketsAPI
    */
   publicRequest(instrument, currency, action, params) {
     let qs = "";
@@ -143,19 +114,15 @@ export default class BTCMarkets {
       timeout: this.timeout,
     }).then((r) => r.json());
   }
-  //
-  // Public Functions
-  //
   /**
    *
    *
    * @param {String} instrument
    * @param {String} currency
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async getTick(instrument, currency) {
-    await this.callRateLimiter("tick");
     return this.publicRequest(instrument, currency, "tick");
   }
   /**
@@ -164,10 +131,9 @@ export default class BTCMarkets {
    * @param {String} instrument
    * @param {String} currency
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async getOrderBook(instrument, currency) {
-    await this.callRateLimiter("orderbook");
     return this.publicRequest(instrument, currency, "orderbook");
   }
   /**
@@ -177,10 +143,9 @@ export default class BTCMarkets {
    * @param {any} currency
    * @param {any} since
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async getTrades(instrument, currency, since) {
-    await this.callRateLimiter("trades");
     return this.publicRequest(instrument, currency, "trades", {
       since,
     });
@@ -200,10 +165,9 @@ export default class BTCMarkets {
    * @param {any} ordertype
    * @param {any} clientRequestId
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async createOrder(instrument, currency, price, volume, orderSide, ordertype, clientRequestId) {
-    await this.callRateLimiter("ordercreate", lowerRateLimit);
     return this.signedRequest("/order/create", {
       currency,
       instrument,
@@ -219,10 +183,9 @@ export default class BTCMarkets {
    *
    * @param {any} orderIds
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async cancelOrders(orderIds) {
-    await this.callRateLimiter("ordercancel");
     return this.signedRequest("/order/cancel", {
       orderIds,
     });
@@ -233,10 +196,9 @@ export default class BTCMarkets {
    *
    * @param {any} orderIds
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async getOrderDetail(orderIds) {
-    await this.callRateLimiter("ordercancel");
     return this.signedRequest("/order/detail", {
       orderIds,
     });
@@ -250,10 +212,9 @@ export default class BTCMarkets {
    * @param {any} limit
    * @param {any} since
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async getOpenOrders(instrument, currency, limit, since) {
-    await this.callRateLimiter("orderopen");
     return this.signedRequest("/order/open", {
       currency,
       instrument,
@@ -269,15 +230,14 @@ export default class BTCMarkets {
    * @param {any} limit
    * @param {any} since
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async getOrderHistory(instrument, currency, limit, since) {
-    await this.callRateLimiter("orderhistory", lowerRateLimit);
     return this.signedRequest("/order/history", {
-      currency: currency,
-      instrument: instrument,
-      limit: limit,
-      since: since,
+      currency,
+      instrument,
+      limit,
+      since,
     });
   }
   /**
@@ -288,10 +248,9 @@ export default class BTCMarkets {
    * @param {any} limit
    * @param {any} since
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async getTradeHistory(instrument, currency, limit, since) {
-    await this.callRateLimiter("ordertradehistory", lowerRateLimit);
     return this.signedRequest("/order/trade/history", {
       currency,
       instrument,
@@ -303,10 +262,9 @@ export default class BTCMarkets {
    *
    *
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async getAccountBalances() {
-    await this.callRateLimiter("accountbalance");
     return this.signedRequest("/account/balance");
   }
   /**
@@ -315,10 +273,9 @@ export default class BTCMarkets {
    * @param {any} instrument
    * @param {any} currency
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async getTradingFee(instrument, currency) {
-    await this.callRateLimiter("tradingfee", lowerRateLimit);
     return this.signedRequest(`/account/${instrument}/${currency}/tradingfee`);
   }
   /**
@@ -328,10 +285,9 @@ export default class BTCMarkets {
    * @param {any} address
    * @param {any} currency
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async withdrawCrypto(amount, address, currency) {
-    await this.callRateLimiter("withdrawcrypto", lowerRateLimit);
     return this.signedRequest("/fundtransfer/withdrawCrypto", {
       amount,
       address,
@@ -348,10 +304,9 @@ export default class BTCMarkets {
    * @param {any} amount
    * @param {string} [currency="AUD"]
    * @returns {Promise}
-   * @memberof BTCMarkets
+   * @memberof BTCMarketsAPI
    */
   async withdrawEFT(accountName, accountNumber, bankName, bsbNumber, amount, currency = "AUD") {
-    await this.callRateLimiter("withdrawEFT", lowerRateLimit);
     return this.privateRequest("/fundtransfer/withdrawEFT", {
       accountName,
       accountNumber,
@@ -361,4 +316,6 @@ export default class BTCMarkets {
       currency,
     });
   }
+
 }
+export default BTCMarketsAPI;

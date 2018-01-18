@@ -14,7 +14,7 @@ For websocket support see [btc-markets-ws-api](https://www.github.com/azerothian
 
 ### Install
 
-`npm install @azerothian/btc-markets-api`
+`yarn add @azerothian/btc-markets-api`
 
 ### Documentation
 
@@ -22,7 +22,7 @@ For websocket support see [btc-markets-ws-api](https://www.github.com/azerothian
 
 ### Features
 - Promises - all functions return promises and can be used with all its glory.
-- Basic Rate limiting within the context of the Client per api. It is not a fool proof method, but it should work as long as you treat your client as a singleton. it can be disabled by providing {disableRateLimiters: true} as in option in the constructor. (it will only delay the execution of the command, till the queue has waited long enough)
+
 
 ### Examples
 

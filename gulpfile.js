@@ -16,7 +16,7 @@ gulp.task("clean", () => {
   return del(["build/**/*"]);
 });
 
-gulp.task("compile:publish", ["lint"], () => {
+gulp.task("compile:publish", ["doc", "lint"], () => {
   return gulp.src(["src/**/*"])
     .pipe(sourcemaps.init())
     .pipe(babel({

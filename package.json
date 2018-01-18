@@ -1,6 +1,6 @@
 {
   "name": "@azerothian/btc-markets-api",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "BTC Markets Rest Client",
   "main": "build/index.js",
   "scripts": {
@@ -15,8 +15,7 @@
     ]
   },
   "files": [
-    "build/index.js",
-    "build/rate-limiter.js"
+    "build/index.js"
   ],
   "devEngines": {
     "node": "8.x || 9.x"
@@ -42,7 +41,6 @@
   },
   "keywords": [
     "BTC Markets",
-    "API",
     "exchange",
     "Bitcoin",
     "Ethereum",
