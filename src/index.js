@@ -40,7 +40,7 @@ export type OrderBook = {
   bids: number[][]
 }
 
-export type Trade = {
+export type TradeTick = {
   tid: number,
   amount: number,
   price: number,
@@ -54,29 +54,25 @@ export type Balance = {
 }
 
 export type BaseResponse = {
-    success: boolean,
-    errorCode: number | null,
-    errorMessage: string | null
+  success: boolean,
+  errorCode: number | null,
+  errorMessage: string | null
 }
 
-export interface NewOrder extends BaseResponse
-{
+export type NewOrder = {
     id: number,
     clientRequestId?: string
 }
 
-export interface CancelledOrder extends BaseResponse
-{
+export type CancelledOrder = {
     id: number
 }
 
-export interface CancelledOrders extends BaseResponse
-{
+export type CancelledOrders = {
     responses: CancelledOrder[]
 }
 
-export interface Trade
-{
+export type Trade = {
     id: number,
     creationTime: number,
     description: string | null,
@@ -87,8 +83,7 @@ export interface Trade
     orderId: number
 }
 
-export interface Order
-{
+export type Order = {
     id: number,
     currency: currencies,
     instruments: instruments,
@@ -104,66 +99,55 @@ export interface Order
     trades: Trade[]
 }
 
-export interface Orders extends BaseResponse
-{
+export type Orders = {
     orders: Order[]
 }
 
-export interface Trades extends BaseResponse
-{
+export type Trades = {
     trades: Trade[]
 }
 
-export interface TradingFee extends BaseResponse
-{
+export type TradingFee = {
     tradingFeeRate: number,
     volume30Day: number
 }
 
-export interface Withdrawal extends BaseResponse
-{
+export type Withdrawal = {
     status: WithdrawalStatus
 }
 
-export interface CryptoWithdrawal extends Withdrawal
-{
-    fundTransferId: number
-    description: string
-    creationTime: number
-    currency: string
-    amount: number,
-    fee: number
-}
-
-export interface BankWithdrawal extends Withdrawal
-{
-    // TODO find out what's returned from this call
-}
-
-export interface cryptoPaymentDetail
-{
-    address: string,
-    txId: string
-}
-
-export interface FundTransfers
-{
-    status: string,
+export type CryptoWithdrawal = {
     fundTransferId: number,
     description: string,
     creationTime: number,
-    currency: allCurrencies,
+    currency: string,
     amount: number,
     fee: number,
-    transferType: string,
-    errorMessage: string | null
-    lastUpdate: number,
-    cryptoPaymentDetail: cryptoPaymentDetail | null
 }
 
-export interface FundWithdrawals extends BaseResponse
-{
-    fundTransfers: FundTransfers[]
+export type BankWithdrawal = {}
+
+export type cryptoPaymentDetail = {
+  address: string,
+  txId: string,
+}
+
+export type FundTransfers = {
+  status: string,
+  fundTransferId: number,
+  description: string,
+  creationTime: number,
+  currency: allCurrencies,
+  amount: number,
+  fee: number,
+  transferType: string,
+  errorMessage: string | null,
+  lastUpdate: number,
+  cryptoPaymentDetail: cryptoPaymentDetail | null
+}
+
+export type FundWithdrawals = {
+  fundTransfers: FundTransfers[]
 }
 
 
@@ -291,8 +275,8 @@ class BTCMarketsAPI {
     return this.publicRequest(instrument, currency, "tick");
   }
   /**
-   * 
-   * 
+   *
+   *
    * @param {instruments} instrument
    * @param {currencies} currency
    * @returns {Promise<OrderBook>}
@@ -490,24 +474,24 @@ class BTCMarketsAPI {
     });
   }
   /**
-   * 
-   * 
+   *
+   *
    * @param {(number | void)} limit
    * @param {(number | void)} since
    * @param {(boolean | void)} indexForward
-   * @returns {Promise<BTCMarketsAPI.FundWithdrawals>}
+   * @returns {Promise<FundWithdrawals>}
    * @memberof BTCMarketsAPI
    */
   withdrawHistory(limit: number | void,
     since: number | void,
-    indexForward: boolean | void): Promise<BTCMarkets.FundWithdrawals>
+    indexForward: boolean | void): Promise<FundWithdrawals>
   {
     return this.signedRequest("/fundtransfer/history", {
       limit,
       since,
       indexForward,
     });
-  };
+  }
 
 }
 export default BTCMarketsAPI;
