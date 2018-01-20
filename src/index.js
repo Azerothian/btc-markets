@@ -1,6 +1,171 @@
+// @flow
+
 import fetch from "node-fetch";
 import crypto from "crypto";
 import querystring from "querystring";
+
+
+export type BMAOptions = void | {
+  key: string,
+  secret: string,
+  server: string,
+  timeout: number,
+  userAgent: string,
+};
+
+export type currencies = "AUD" | "BTC" //| "USD"
+export type instruments = "BTC" | "BCH" | "ETH" | "ETC" | "LTC" | "XRP" //| "MAID" | "FCT" | "DAO"
+export type allCurrencies = currencies | instruments
+
+export type OrderSide = "Bid" | "Ask"
+export type OrderType = "Limit" | "Market"
+export type OrderStatus = "New" | "Placed" | "Filled" | "Error" | "Cancelled" | "Partially Cancelled" | "Fully Matched" | "Partially Matched"
+export type WithdrawalStatus = string
+
+export type Tick = {
+  bestBid: number,
+  bestAsk: number,
+  lastPrice: number,
+  currency: currencies,
+  instrument: instruments,
+  timestamp: number,
+  volume24h: number
+}
+
+export type OrderBook = {
+  currency: currencies,
+  instrument: instruments,
+  timestamp: number,
+  asks: number[][],
+  bids: number[][]
+}
+
+export type Trade = {
+  tid: number,
+  amount: number,
+  price: number,
+  date: number
+}
+
+export type Balance = {
+  balance: number,
+  pendingFunds: number,
+  currency: allCurrencies
+}
+
+export type BaseResponse = {
+    success: boolean,
+    errorCode: number | null,
+    errorMessage: string | null
+}
+
+export interface NewOrder extends BaseResponse
+{
+    id: number,
+    clientRequestId?: string
+}
+
+export interface CancelledOrder extends BaseResponse
+{
+    id: number
+}
+
+export interface CancelledOrders extends BaseResponse
+{
+    responses: CancelledOrder[]
+}
+
+export interface Trade
+{
+    id: number,
+    creationTime: number,
+    description: string | null,
+    price: number,
+    volume: number,
+    side: "Ask" | "Bid",
+    fee: number,
+    orderId: number
+}
+
+export interface Order
+{
+    id: number,
+    currency: currencies,
+    instruments: instruments,
+    orderSide: OrderSide,
+    ordertype: OrderType,
+    creationTime: number,
+    status: OrderStatus,
+    errorMessage: string | null,
+    price: number,
+    volume: number,
+    openVolume: number,
+    clientRequestId?: string,
+    trades: Trade[]
+}
+
+export interface Orders extends BaseResponse
+{
+    orders: Order[]
+}
+
+export interface Trades extends BaseResponse
+{
+    trades: Trade[]
+}
+
+export interface TradingFee extends BaseResponse
+{
+    tradingFeeRate: number,
+    volume30Day: number
+}
+
+export interface Withdrawal extends BaseResponse
+{
+    status: WithdrawalStatus
+}
+
+export interface CryptoWithdrawal extends Withdrawal
+{
+    fundTransferId: number
+    description: string
+    creationTime: number
+    currency: string
+    amount: number,
+    fee: number
+}
+
+export interface BankWithdrawal extends Withdrawal
+{
+    // TODO find out what's returned from this call
+}
+
+export interface cryptoPaymentDetail
+{
+    address: string,
+    txId: string
+}
+
+export interface FundTransfers
+{
+    status: string,
+    fundTransferId: number,
+    description: string,
+    creationTime: number,
+    currency: allCurrencies,
+    amount: number,
+    fee: number,
+    transferType: string,
+    errorMessage: string | null
+    lastUpdate: number,
+    cryptoPaymentDetail: cryptoPaymentDetail | null
+}
+
+export interface FundWithdrawals extends BaseResponse
+{
+    fundTransfers: FundTransfers[]
+}
+
 
 /**
  * BTC Markets API Client
@@ -8,31 +173,38 @@ import querystring from "querystring";
  * @class BTCMarketsAPI
  */
 class BTCMarketsAPI {
+  key = "";
+  secret = "";
+  server = "";
+  timeout = 20000;
+  userAgent = "BTC Markets API Client"
+
   /**
    * Creates an instance of BTCMarketsAPI.
-   * @param {any} [options={}]
+   * @param {BMAOptions} options
    * @memberof BTCMarketsAPI
-   * @constructor
    */
-  constructor(options = {}) {
-    const { key, secret, server, timeout, userAgent } = options;
-    this.key = key;
-    this.secret = secret;
-    this.server = server || "https://api.btcmarkets.net";
-    this.timeout = timeout || 20000;
-    this.userAgent = userAgent || "BTC Markets API Client";
+  constructor(options: BMAOptions) {
+    if (options) {
+      const {key, secret, server, timeout, userAgent} = options;
+      this.key = key;
+      this.secret = secret;
+      this.server = server || "https://api.btcmarkets.net";
+      this.timeout = timeout || 20000;
+      this.userAgent = userAgent || "BTC Markets API Client";
+    }
   }
 
   /**
    *
    *
-   * @param {any} path
-   * @param {any} timestamp
+   * @param {string} path
+   * @param {number} timestamp
    * @param {string} [body=""]
-   * @returns {Promise}
+   * @returns {string}
    * @memberof BTCMarketsAPI
    */
-  signData(path, timestamp, body = "") {
+  signData(path: string, timestamp: number, body: string = ""): string {
     const data = `${path}\n${timestamp}\n${body}`;
     const signer = crypto.createHmac("sha512", new Buffer(this.secret, "base64"));
     return signer.update(data).digest("base64");
@@ -40,12 +212,12 @@ class BTCMarketsAPI {
   /**
    *
    *
-   * @param {any} path
-   * @param {any} params
-   * @returns {Promise}
+   * @param {string} path
+   * @param {*} params
+   * @returns {Promise<any>}
    * @memberof BTCMarketsAPI
    */
-  async signedRequest(path, params) {
+  async signedRequest(path: string, params: any) : Promise<any> {
     if (!this.key || !this.secret) {
       throw new Error("You must provide key and secret to use this library - please refer to btcmarkets for your details");
     }
@@ -91,14 +263,14 @@ class BTCMarketsAPI {
   /**
    *
    *
-   * @param {any} instrument
-   * @param {any} currency
-   * @param {any} action
-   * @param {any} params
-   * @returns {Promise<object>}
+   * @param {string} instrument
+   * @param {string} currency
+   * @param {string} action
+   * @param {*} params
+   * @returns {Promise<any>}
    * @memberof BTCMarketsAPI
    */
-  publicRequest(instrument, currency, action, params) {
+  async publicRequest(instrument: string, currency: string, action: string, params: any) : Promise<any> {
     let qs = "";
     if (params) {
       qs = `?${querystring.stringify(params)}`;
@@ -114,38 +286,32 @@ class BTCMarketsAPI {
       timeout: this.timeout,
     }).then((r) => r.json());
   }
-  /**
-   *
-   *
-   * @param {String} instrument
-   * @param {String} currency
-   * @returns {Promise}
-   * @memberof BTCMarketsAPI
-   */
-  async getTick(instrument, currency) {
+
+  async getTick(instrument: instruments, currency: currencies): Promise<Tick> {
     return this.publicRequest(instrument, currency, "tick");
   }
   /**
-   *
-   *
-   * @param {String} instrument
-   * @param {String} currency
-   * @returns {Promise}
+   * 
+   * 
+   * @param {instruments} instrument
+   * @param {currencies} currency
+   * @returns {Promise<OrderBook>}
    * @memberof BTCMarketsAPI
    */
-  async getOrderBook(instrument, currency) {
+  async getOrderBook(instrument: instruments, currency: currencies) : Promise<OrderBook> {
     return this.publicRequest(instrument, currency, "orderbook");
   }
+
   /**
    *
    *
-   * @param {any} instrument
-   * @param {any} currency
+   * @param {instruments} instrument
+   * @param {currencies} currency
    * @param {any} since
-   * @returns {Promise}
+   * @returns {Promise<Trade[]>}
    * @memberof BTCMarketsAPI
    */
-  async getTrades(instrument, currency, since) {
+  async getTrades(instrument: instruments, currency: currencies, since: void | number) : Promise<Trade[]> {
     return this.publicRequest(instrument, currency, "trades", {
       since,
     });
@@ -167,7 +333,14 @@ class BTCMarketsAPI {
    * @returns {Promise}
    * @memberof BTCMarketsAPI
    */
-  async createOrder(instrument, currency, price, volume, orderSide, ordertype, clientRequestId) {
+  async createOrder(
+    instrument: instruments,
+    currency: currencies,
+    price: void | number,
+    volume: number,
+    orderSide: OrderSide,
+    ordertype: OrderType,
+    clientRequestId?: void | string): Promise<NewOrder> {
     return this.signedRequest("/order/create", {
       currency,
       instrument,
@@ -307,7 +480,7 @@ class BTCMarketsAPI {
    * @memberof BTCMarketsAPI
    */
   async withdrawEFT(accountName, accountNumber, bankName, bsbNumber, amount, currency = "AUD") {
-    return this.privateRequest("/fundtransfer/withdrawEFT", {
+    return this.signedRequest("/fundtransfer/withdrawEFT", {
       accountName,
       accountNumber,
       bankName,
@@ -316,6 +489,25 @@ class BTCMarketsAPI {
       currency,
     });
   }
+  /**
+   * 
+   * 
+   * @param {(number | void)} limit
+   * @param {(number | void)} since
+   * @param {(boolean | void)} indexForward
+   * @returns {Promise<BTCMarketsAPI.FundWithdrawals>}
+   * @memberof BTCMarketsAPI
+   */
+  withdrawHistory(limit: number | void,
+    since: number | void,
+    indexForward: boolean | void): Promise<BTCMarkets.FundWithdrawals>
+  {
+    return this.signedRequest("/fundtransfer/history", {
+      limit,
+      since,
+      indexForward,
+    });
+  };
 
 }
 export default BTCMarketsAPI;

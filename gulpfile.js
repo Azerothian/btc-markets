@@ -20,7 +20,7 @@ gulp.task("compile:publish", ["doc", "lint"], () => {
   return gulp.src(["src/**/*"])
     .pipe(sourcemaps.init())
     .pipe(babel({
-      "presets": [[
+      "presets": [["flow"], [
         "@babel/preset-env", {
           "targets": {
             "node": "8.9.4", //8.9.4 LTS as of 17/01/2018
@@ -29,6 +29,8 @@ gulp.task("compile:publish", ["doc", "lint"], () => {
         },
       ]],
       "plugins": [
+        "syntax-flow",
+        "transform-flow-strip-types",
         "autobind-class-methods",
         "transform-class-properties",
       ],

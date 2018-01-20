@@ -1,9 +1,8 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-
-// The number of spaces a tab is equal to.
-"editor.tabSize": 2,
-
-// Insert spaces when pressing Tab.
-"editor.insertSpaces": true
+  // The number of spaces a tab is equal to.
+  "editor.tabSize": 2,
+  // Insert spaces when pressing Tab.
+  "editor.insertSpaces": true,
+  "javascript.validate.enable": false
 }

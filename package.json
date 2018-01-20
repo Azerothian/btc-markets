@@ -37,6 +37,7 @@
     "jest": "^22.1.1"
   },
   "dependencies": {
+    "babel-preset-flow": "^6.23.0",
     "node-fetch": "^1.7.3"
   },
   "keywords": [
