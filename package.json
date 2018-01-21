@@ -5,8 +5,8 @@
   "main": "build/index.js",
   "scripts": {
     "test": "jest",
-    "prepublishOnly": "yarn && gulp compile:publish",
-    "publish": "npm publish --access=public"
+    "prepublish": "yarn && gulp compile:publish",
+    "run-publish": "npm publish --access=public"
   },
   "jest": {
     "verbose": false,
