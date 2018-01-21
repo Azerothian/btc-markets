@@ -3,6 +3,15 @@ import crypto from "crypto";
 import querystring from "querystring";
 
 /**
+ * @typedef Options
+ * @type {Object}
+ * @property {string | void} key Your private API key, this is only required if you call any account api's
+ * @property {string | void} secret Your private API secret, this is only required if you call any account api's
+ * @property {string | void} server Target api uri, defaults to "https://api.btcmarkets.net"
+ * @property {number | void} timeout Fetch timeout, defaults to 20000ms
+ * @property {string | void} userAgent HTTP UserAgent, defaults to "BTC Markets API Client"
+ */
+/**
  * BTC Markets API Client
  *
  * @class BTCMarketsAPI
@@ -10,12 +19,12 @@ import querystring from "querystring";
 class BTCMarketsAPI {
   /**
    * Creates an instance of BTCMarketsAPI.
-   * @param {any} [options={}]
-   * @memberof BTCMarketsAPI
+   * @param {Options | void} options Options object for communicating with btcmarkets
    * @constructor
+   * @memberof BTCMarketsAPI
    */
   constructor(options = {}) {
-    const { key, secret, server, timeout, userAgent } = options;
+    const {key, secret, server, timeout, userAgent} = options;
     this.key = key;
     this.secret = secret;
     this.server = server || "https://api.btcmarkets.net";
@@ -81,24 +90,24 @@ class BTCMarketsAPI {
     try {
       const json = JSON.parse(text);
       if (json.errorCode) {
-        throw new Error({ code: json.errorCode, message: json.errorMessage });
+        throw new Error({code: json.errorCode, message: json.errorMessage});
       }
       return json;
     } catch (err) {
-      throw new Error({ message: text });
+      throw new Error({message: text});
     }
   }
   /**
    *
    *
-   * @param {any} instrument
-   * @param {any} currency
+   * @param {string} instrument
+   * @param {string} currency
    * @param {any} action
    * @param {any} params
    * @returns {Promise<object>}
    * @memberof BTCMarketsAPI
    */
-  publicRequest(instrument, currency, action, params) {
+  async publicRequest(instrument, currency, action, params) {
     let qs = "";
     if (params) {
       qs = `?${querystring.stringify(params)}`;
@@ -139,8 +148,8 @@ class BTCMarketsAPI {
   /**
    *
    *
-   * @param {any} instrument
-   * @param {any} currency
+   * @param {string} instrument
+   * @param {string} currency
    * @param {any} since
    * @returns {Promise}
    * @memberof BTCMarketsAPI
@@ -157,8 +166,8 @@ class BTCMarketsAPI {
   /**
    *
    *
-   * @param {any} instrument
-   * @param {any} currency
+   * @param {string} instrument
+   * @param {string} currency
    * @param {any} price
    * @param {any} volume
    * @param {any} orderSide
@@ -207,9 +216,9 @@ class BTCMarketsAPI {
   /**
    *
    *
-   * @param {any} instrument
-   * @param {any} currency
-   * @param {any} limit
+   * @param {string} instrument
+   * @param {string} currency
+   * @param {number} limit
    * @param {any} since
    * @returns {Promise}
    * @memberof BTCMarketsAPI
@@ -225,9 +234,9 @@ class BTCMarketsAPI {
   /**
    *
    *
-   * @param {any} instrument
-   * @param {any} currency
-   * @param {any} limit
+   * @param {string} instrument
+   * @param {string} currency
+   * @param {number} limit
    * @param {any} since
    * @returns {Promise}
    * @memberof BTCMarketsAPI
@@ -243,9 +252,9 @@ class BTCMarketsAPI {
   /**
    *
    *
-   * @param {any} instrument
-   * @param {any} currency
-   * @param {any} limit
+   * @param {string} instrument
+   * @param {string} currency
+   * @param {number} limit
    * @param {any} since
    * @returns {Promise}
    * @memberof BTCMarketsAPI
@@ -270,8 +279,8 @@ class BTCMarketsAPI {
   /**
    *
    *
-   * @param {any} instrument
-   * @param {any} currency
+   * @param {string} instrument
+   * @param {string} currency
    * @returns {Promise}
    * @memberof BTCMarketsAPI
    */
@@ -283,7 +292,7 @@ class BTCMarketsAPI {
    *
    * @param {any} amount
    * @param {any} address
-   * @param {any} currency
+   * @param {string} currency
    * @returns {Promise}
    * @memberof BTCMarketsAPI
    */
@@ -307,7 +316,7 @@ class BTCMarketsAPI {
    * @memberof BTCMarketsAPI
    */
   async withdrawEFT(accountName, accountNumber, bankName, bsbNumber, amount, currency = "AUD") {
-    return this.privateRequest("/fundtransfer/withdrawEFT", {
+    return this.signedRequest("/fundtransfer/withdrawEFT", {
       accountName,
       accountNumber,
       bankName,
@@ -316,6 +325,21 @@ class BTCMarketsAPI {
       currency,
     });
   }
-
+  /**
+   *
+   *
+   * @param {(number | void)} limit
+   * @param {(number | void)} since
+   * @param {(boolean | void)} indexForward
+   * @returns {Promise<FundWithdrawals>}
+   * @memberof BTCMarketsAPI
+   */
+  async withdrawHistory(limit, since, indexForward) {
+    return this.signedRequest("/fundtransfer/history", {
+      limit,
+      since,
+      indexForward,
+    });
+  }
 }
 export default BTCMarketsAPI;

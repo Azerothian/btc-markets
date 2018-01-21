@@ -21,7 +21,9 @@ For websocket support see [btc-markets-ws-api](https://www.github.com/azerothian
 [Link to Documentation](https://azerothian.github.io/btc-markets-api/)
 
 ### Features
+- Single dependency - node-fetch, no need to scan and research multiple dependencies for those with security in mine, (node-fetch has no dependencies)
 - Promises - all functions return promises and can be used with all its glory.
+- Simple API 
 
 
 ### Examples
@@ -29,42 +31,41 @@ For websocket support see [btc-markets-ws-api](https://www.github.com/azerothian
 ```js
 import BTCMarkets from "@azerothian/btc-markets-api";
 (async() => {
-    try {
-        const client = new BTCMarkets({key: "", secret: ""});
+  try {
+    const client = new BTCMarkets({key: "", secret: ""});
 
-        const numberConverter = 100000000;    // one hundred million
+    const numberConverter = 100000000;    // one hundred million
 
-        // get latest prices
-        const tickData = await client.getTick("BTC", "AUD");
-        console.log(`bid ${tickData.bestBid} ask ${tickData.bestAsk} last price ${tickData.lastPrice}`);
+    // get latest prices
+    const tickData = await client.getTick("BTC", "AUD");
+    console.log(`bid ${tickData.bestBid} ask ${tickData.bestAsk} last price ${tickData.lastPrice}`);
 
-        // get order book
-        const orderBook = await client.getOrderBook("BTC", "AUD");
-        console.log(`${orderBook.asks.length} asks with best ask having price ${orderBook.asks[0][0]} and amount ${orderBook.asks[0][1]}`);
+    // get order book
+    const orderBook = await client.getOrderBook("BTC", "AUD");
+    console.log(`${orderBook.asks.length} asks with best ask having price ${orderBook.asks[0][0]} and amount ${orderBook.asks[0][1]}`);
 
-        // limit buy order for of 0.01 BTC at 230 AUD
-        const createLimitedBuyOrder = await client.createOrder("BTC", "AUD", 230 * numberConverter, 0.01 * numberConverter, 'Bid', 'Limit', "10001");
-        console.log(createLimitedBuyOrder);
+    // limit buy order for of 0.01 BTC at 230 AUD
+    const createLimitedBuyOrder = await client.createOrder("BTC", "AUD", 230 * numberConverter, 0.01 * numberConverter, 'Bid', 'Limit', "10001");
+    console.log(createLimitedBuyOrder);
 
-        // market sell for 0.0001 BTC
-        const sellOrder = await client.createOrder("BTC", "AUD", null, 0.0001 * numberConverter, 'Ask', 'Market', null);
-        console.log(sellOrder);
+    // market sell for 0.0001 BTC
+    const sellOrder = await client.createOrder("BTC", "AUD", null, 0.0001 * numberConverter, 'Ask', 'Market', null);
+    console.log(sellOrder);
 
-        // cancel two limit orders with id's 123456 and 987654
-        const cancelOrders = await client.cancelOrder([123456,987654]);
-        console.log(`first order was cancelled ${cancelOrders.responses[0].success}`);
+    // cancel two limit orders with id's 123456 and 987654
+    const cancelOrders = await client.cancelOrder([123456,987654]);
+    console.log(`first order was cancelled ${cancelOrders.responses[0].success}`);
 
-        const accountBalances = await client.getAccountBalances();
-        accountBalances.forEach((account) => {
-            console.log(`${account.currency} balance ${account.balance / numberConverter} pending ${account.pendingFunds / numberConverter}`);
-        });
+    const accountBalances = await client.getAccountBalances();
+    accountBalances.forEach((account) => {
+      console.log(`${account.currency} balance ${account.balance / numberConverter} pending ${account.pendingFunds / numberConverter}`);
+    });
 
-        const tradingFee = client.getTradingFee("BTC", "AUD");
-        console.log(tradingFee);
-    } catch (err) {
-        console.log(err);
-    }
-
+    const tradingFee = client.getTradingFee("BTC", "AUD");
+    console.log(tradingFee);
+  } catch (err) {
+      console.log(err);
+  }
 })();
 
 ```
@@ -73,6 +74,7 @@ import BTCMarkets from "@azerothian/btc-markets-api";
 
 - We use gulp with babel for source transpiling.
 - `npm run test` or `jest` to run test the test cases
+- `gulp watch` to monitor and watch for 
 - To run the private test cases you need to set the following keys in your environment variables or create a `.env` file with the following filled in
 ```
 BTCMKT_KEY=""

@@ -37,6 +37,13 @@
 				</ul>
 			</li>
 			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html">Global</a></li>
+				</ul>
+			</li>
+			
 		</ul>
         
             <div class="col-sm-3 col-md-3">
@@ -93,53 +100,54 @@ You will need have a registered account with <a href="https://btcmarkets.net">BT
 <h3>Requirements</h3><ul>
 <li>Nodejs &gt;= 8.9.4</li>
 </ul>
-<h3>Install</h3><p><code>npm install @azerothian/btc-markets-api</code></p>
+<h3>Install</h3><p><code>yarn add @azerothian/btc-markets-api</code></p>
 <h3>Documentation</h3><p><a href="https://azerothian.github.io/btc-markets-api/">Link to Documentation</a></p>
 <h3>Features</h3><ul>
+<li>Single dependency - node-fetch, no need to scan and research multiple dependencies for those with security in mine, (node-fetch has no dependencies)</li>
 <li>Promises - all functions return promises and can be used with all its glory.</li>
-<li>Basic Rate limiting within the context of the Client per api. It is not a fool proof method, but it should work as long as you treat your client as a singleton. it can be disabled by providing {disableRateLimiters: true} as in option in the constructor. (it will only delay the execution of the command, till the queue has waited long enough)</li>
+<li>Simple API </li>
 </ul>
 <h3>Examples</h3><pre class="prettyprint source lang-js"><code>import BTCMarkets from &quot;@azerothian/btc-markets-api&quot;;
 (async() => {
-    try {
-        const client = new BTCMarkets({key: &quot;&quot;, secret: &quot;&quot;});
+  try {
+    const client = new BTCMarkets({key: &quot;&quot;, secret: &quot;&quot;});
 
-        const numberConverter = 100000000;    // one hundred million
+    const numberConverter = 100000000;    // one hundred million
 
-        // get latest prices
-        const tickData = await client.getTick(&quot;BTC&quot;, &quot;AUD&quot;);
-        console.log(`bid ${tickData.bestBid} ask ${tickData.bestAsk} last price ${tickData.lastPrice}`);
+    // get latest prices
+    const tickData = await client.getTick(&quot;BTC&quot;, &quot;AUD&quot;);
+    console.log(`bid ${tickData.bestBid} ask ${tickData.bestAsk} last price ${tickData.lastPrice}`);
 
-        // get order book
-        const orderBook = await client.getOrderBook(&quot;BTC&quot;, &quot;AUD&quot;);
-        console.log(`${orderBook.asks.length} asks with best ask having price ${orderBook.asks[0][0]} and amount ${orderBook.asks[0][1]}`);
+    // get order book
+    const orderBook = await client.getOrderBook(&quot;BTC&quot;, &quot;AUD&quot;);
+    console.log(`${orderBook.asks.length} asks with best ask having price ${orderBook.asks[0][0]} and amount ${orderBook.asks[0][1]}`);
 
-        // limit buy order for of 0.01 BTC at 230 AUD
-        const createLimitedBuyOrder = await client.createOrder(&quot;BTC&quot;, &quot;AUD&quot;, 230 * numberConverter, 0.01 * numberConverter, 'Bid', 'Limit', &quot;10001&quot;);
-        console.log(createLimitedBuyOrder);
+    // limit buy order for of 0.01 BTC at 230 AUD
+    const createLimitedBuyOrder = await client.createOrder(&quot;BTC&quot;, &quot;AUD&quot;, 230 * numberConverter, 0.01 * numberConverter, 'Bid', 'Limit', &quot;10001&quot;);
+    console.log(createLimitedBuyOrder);
 
-        // market sell for 0.0001 BTC
-        const sellOrder = await client.createOrder(&quot;BTC&quot;, &quot;AUD&quot;, null, 0.0001 * numberConverter, 'Ask', 'Market', null);
-        console.log(sellOrder);
+    // market sell for 0.0001 BTC
+    const sellOrder = await client.createOrder(&quot;BTC&quot;, &quot;AUD&quot;, null, 0.0001 * numberConverter, 'Ask', 'Market', null);
+    console.log(sellOrder);
 
-        // cancel two limit orders with id's 123456 and 987654
-        const cancelOrders = await client.cancelOrder([123456,987654]);
-        console.log(`first order was cancelled ${cancelOrders.responses[0].success}`);
+    // cancel two limit orders with id's 123456 and 987654
+    const cancelOrders = await client.cancelOrder([123456,987654]);
+    console.log(`first order was cancelled ${cancelOrders.responses[0].success}`);
 
-        const accountBalances = await client.getAccountBalances();
-        accountBalances.forEach((account) => {
-            console.log(`${account.currency} balance ${account.balance / numberConverter} pending ${account.pendingFunds / numberConverter}`);
-        });
+    const accountBalances = await client.getAccountBalances();
+    accountBalances.forEach((account) => {
+      console.log(`${account.currency} balance ${account.balance / numberConverter} pending ${account.pendingFunds / numberConverter}`);
+    });
 
-        const tradingFee = client.getTradingFee(&quot;BTC&quot;, &quot;AUD&quot;);
-        console.log(tradingFee);
-    } catch (err) {
-        console.log(err);
-    }
-
+    const tradingFee = client.getTradingFee(&quot;BTC&quot;, &quot;AUD&quot;);
+    console.log(tradingFee);
+  } catch (err) {
+      console.log(err);
+  }
 })();</code></pre><h3>Development</h3><ul>
 <li>We use gulp with babel for source transpiling.</li>
 <li><code>npm run test</code> or <code>jest</code> to run test the test cases</li>
+<li><code>gulp watch</code> to monitor and watch for </li>
 <li>To run the private test cases you need to set the following keys in your environment variables or create a <code>.env</code> file with the following filled in<pre class="prettyprint source"><code>BTCMKT_KEY=&quot;&quot;
 BTCMKT_SECRET=&quot;&quot;</code></pre></li>
 </ul></article>
@@ -188,7 +196,7 @@ BTCMKT_SECRET=&quot;&quot;</code></pre></li>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on January 18th 2018, 12:04:48 pm
+		on January 21st 2018, 11:06:22 am
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

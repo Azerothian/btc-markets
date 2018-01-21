@@ -1,11 +1,12 @@
 {
   "name": "@azerothian/btc-markets-api",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "BTC Markets Rest Client",
   "main": "build/index.js",
   "scripts": {
     "test": "jest",
-    "prepublishOnly": "yarn && gulp compile:publish"
+    "prepublishOnly": "yarn && gulp compile:publish",
+    "publish": "npm publish --access=public"
   },
   "jest": {
     "verbose": false,
